@@ -7,7 +7,7 @@ module Yourub
                           'HU','IN','IE','IL','IT','JP','JO','MY','MX','MA','NL','NZ','PE','PH',
                           'PL','RU','SA','SG','ZA','KR','ES','SE','CH','TW','AE','US']
       ORDERS          = ['date', 'rating', 'relevance', 'title', 'videoCount', 'viewCount']
-      VALID_PARAMS    = [:country, :category, :query, :max_results, :count_filter, :order ]
+      VALID_PARAMS    = [:country, :category, :query, :max_results, :count_filter, :order, :channelId ]
       MINIMUM_PARAMS  = [:country, :category, :query, :channelId]
 
       def confirm(criteria)
