@@ -3,7 +3,7 @@ yourub_defaults: &yourub_defaults
   youtube_api_service_name: 'youtube'
   youtube_api_version: 'v3'
   application_name: "yourub"
-  application_version: "0.1.1"
+  application_version: "0.1"
   log_level: WARN
 
 development:
