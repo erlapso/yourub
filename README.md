@@ -92,12 +92,23 @@ that is the content of the response:
 `:order` String, one of these: 'date', 'rating', 'relevance', 'title', 'videocount', 'viewcount'. The default one is `'relevance'`
 
 It's necessary at least one of this parameters to start a search: `:country`, `:category`, `:query`
- 
+
 ### Methods
 * `search`, search youtube videos for the given parameters
 ```ruby
 client = Yourub::Client.new
 client.search(query: "space missions")
+```
+You can also search for specific channel Id
+```ruby
+client = Yourub::Client.new
+client.search(channel_id: "UCSFMADvCb8OL0-3PrzUT_JA")
+```
+
+* `search_channels`, search youtube channel for the given parameters
+```ruby
+client = Yourub::Client.new
+client.search_channels(for_username: "spacex")
 ```
 
 * `get_views`
