@@ -28,6 +28,26 @@ module Yourub
       end
     end
 
+    def search_channels(criteria)
+      begin
+        @api_options= {
+          :part            => 'snippet',
+          :type            => 'video',
+          :order           => 'relevance',
+          :safeSearch      => 'none',
+         }
+        @categories = []
+        @count_filter = {}
+        @criteria = criteria
+        merge_criteria_with_api_options
+        retrieve_channels do |res|
+          yield res
+        end
+      rescue ArgumentError => e
+        Yourub.logger.error "#{e}"
+      end
+    end
+
     # return the number of times a video was watched
     # @param video_id[Integer]
     # @example
@@ -62,7 +82,7 @@ private
     end
 
     def merge_criteria_with_api_options
-      mappings = {query: :q, max_results: :maxResults, country: :regionCode}
+      mappings = {query: :q, max_results: :maxResults, country: :regionCode, channel_id: :channelId, for_username: :forUsername}
       @api_options.merge! @criteria
       @api_options.keys.each do |k|
         @api_options[ mappings[k] ] = @api_options.delete(k) if mappings[k]
@@ -81,6 +101,19 @@ private
         begin
           req = Yourub::REST::Search.list(self, criteria)
           get_details_for_each_video(req) do |v|
+            yield v
+          end
+        rescue StandardError => e
+          Yourub.logger.error "Error #{e} retrieving videos for the criteria: #{criteria.to_s}"
+        end
+      end
+    end
+
+    def retrieve_channels
+      consume_criteria do |criteria|
+        begin
+          req = Yourub::REST::Channels.list(self, criteria)
+          get_details_for_each_channel(req) do |v|
             yield v
           end
         rescue StandardError => e
@@ -121,6 +154,12 @@ private
         if v && Yourub::CountFilter.accept?(v.first)
           yield v.first
         end
+      end
+    end
+
+    def get_details_for_each_channel(channel_list)
+      channel_list.data.items.each do |channel_item|
+        yield channel_item
       end
     end
 
