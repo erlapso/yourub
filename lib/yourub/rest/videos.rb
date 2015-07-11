@@ -26,10 +26,10 @@ module Yourub
 
         def single_video_params(video_id)
           fields = URI::encode(
-            'items(id,snippet(title,thumbnails),statistics(viewCount),contentDetails'
+            'items(id,snippet(title,thumbnails),statistics(viewCount)'
           )
           { :id => video_id,
-            :part => 'snippet,statistics,id,contentDetails',
+            :part => 'snippet,statistics,id',
             :fields => fields }
         end
       end
